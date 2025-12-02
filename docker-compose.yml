@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  api_http:
+    build: .
+    container_name: api_http
+    ports:
+      - "8000:8000"
+
+  api_https:
+    build: .
+    container_name: api_https
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./certs:/certs:ro
+    command: >
+      uvicorn main:app
+      --host 0.0.0.0
+      --port 8443
+      --ssl-keyfile=/certs/key.pem
+      --ssl-certfile=/certs/cert.pem
